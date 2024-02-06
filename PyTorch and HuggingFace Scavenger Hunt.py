@@ -1,11 +1,11 @@
 # PyTorch and HuggingFace Scavenger Hunt
 
-Hello, GitHub community! 👋 I'm on a journey to explore the powerful tools of PyTorch and HuggingFace. Join me in this scavenger hunt to uncover hidden treasures along the way.
+#Hello, GitHub community! 👋 I'm on a journey to explore the powerful tools of PyTorch and HuggingFace. Join me in this scavenger hunt to uncover hidden treasures along the way.
 
 ## Part 1: Familiarize Yourself with PyTorch
 
 ### PyTorch Tensors
-Let's start by creating a PyTorch tensor named `my_tensor`. Ensure it's of size 3x3 with values of our choice, and created on the GPU if available.
+#Let's start by creating a PyTorch tensor named `my_tensor`. Ensure it's of size 3x3 with values of our choice, and created on the GPU if available.
 
 import torch
 
@@ -25,8 +25,8 @@ assert my_tensor.shape == (3, 3)
 print("Success!")
 
 
-### Neural Net Constructor Kit `torch.nn`
-Now, let's construct a three-layer Multi-Layer Perceptron (MLP) using PyTorch's `torch.nn` module.
+### Neural Net Constructor Kit `torch.nn` 
+#Now, let's construct a three-layer Multi-Layer Perceptron (MLP) using PyTorch's `torch.nn` module.
 
 import torch.nn as nn
 
@@ -64,8 +64,8 @@ assert my_mlp.fc1.out_features == 128
 assert isinstance(my_mlp.fc1, nn.Linear)
 assert isinstance(my_mlp.fc2, nn.Linear)
 
-### PyTorch Loss Functions and Optimizers
-Let's create a loss function using `torch.nn.CrossEntropyLoss` and an optimizer using `torch.optim.SGD`.
+### PyTorch Loss Functions and Optimizers 
+#Let's create a loss function using `torch.nn.CrossEntropyLoss` and an optimizer using `torch.optim.SGD`.
 
 # Loss function
 loss_fn = nn.CrossEntropyLoss()
@@ -80,7 +80,7 @@ assert optimizer.defaults["lr"] == 0.001
 assert optimizer.param_groups[0]["params"] == list(my_mlp.parameters())
 
 ### PyTorch Training Loops
-PyTorch makes writing a training loop easy!
+#PyTorch makes writing a training loop easy!
 
 def fake_training_loaders():
     for _ in range(30):
@@ -110,7 +110,7 @@ for epoch in range(3):
 ## Part 2: Get to Know HuggingFace
 
 ### Download a Model from HuggingFace for Sentiment Analysis
-Let's use the `distilbert-base-uncased-finetuned-sst-2-english` model for sentiment analysis.
+#Let's use the `distilbert-base-uncased-finetuned-sst-2-english` model for sentiment analysis.
 
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
@@ -137,4 +137,4 @@ print(f"Sentiment: {get_prediction(review_positive)}")
 assert get_prediction(review_positive) == "positive", "The prediction should be positive"
 
 ### Download a Dataset from HuggingFace
-Let's use the IMDb dataset for our
+#Let's use the IMDb dataset for our
