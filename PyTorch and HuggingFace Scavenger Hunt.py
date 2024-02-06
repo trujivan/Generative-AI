@@ -1,11 +1,6 @@
-# PyTorch and HuggingFace Scavenger Hunt
+# Fill in the missing parts labelled <MASK> with the appropriate code to complete the exercise.
 
-#Hello, GitHub community! 👋 I'm on a journey to explore the powerful tools of PyTorch and HuggingFace. Join me in this scavenger hunt to uncover hidden treasures along the way.
-
-## Part 1: Familiarize Yourself with PyTorch
-
-### PyTorch Tensors
-#Let's start by creating a PyTorch tensor named `my_tensor`. Ensure it's of size 3x3 with values of our choice, and created on the GPU if available.
+# Hint: Use torch.cuda.is_available() to check if GPU is available
 
 import torch
 
@@ -13,20 +8,19 @@ import torch
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # Create a tensor on the appropriate device
-my_tensor = torch.randn((3, 3), device=device)
+my_tensor = torch.rand((3, 3)).to(device)
 
 # Print the tensor
 print(my_tensor)
 
-# Check the device and shape
+# Check the previous cell
+
 assert my_tensor.device.type in {"cuda", "cpu"}
 assert my_tensor.shape == (3, 3)
 
 print("Success!")
 
-
-### Neural Net Constructor Kit `torch.nn` 
-#Now, let's construct a three-layer Multi-Layer Perceptron (MLP) using PyTorch's `torch.nn` module.
+# Replace <MASK> with the appropriate code to complete the exercise.
 
 import torch.nn as nn
 
@@ -48,39 +42,60 @@ class MyMLP(nn.Module):
         self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x):
+        # Pass the input to the second layer
         x = self.fc1(x)
+
+        # Apply ReLU activation
         x = self.relu(x)
+
+        # Pass the result to the final layer
         x = self.fc2(x)
+
+        # Apply softmax activation
         x = self.softmax(x)
+
         return x
 
 my_mlp = MyMLP()
 print(my_mlp)
 
-# Check the architecture
+# Check your work here:
+
+# Check the number of inputs
 assert my_mlp.fc1.in_features == 784
+
+# Check the number of outputs
 assert my_mlp.fc2.out_features == 10
+
+# Check the number of nodes in the hidden layer
 assert my_mlp.fc1.out_features == 128
+
+# Check that my_mlp.fc1 is a fully connected layer
 assert isinstance(my_mlp.fc1, nn.Linear)
+
+# Check that my_mlp.fc2 is a fully connected layer
 assert isinstance(my_mlp.fc2, nn.Linear)
 
-### PyTorch Loss Functions and Optimizers 
-#Let's create a loss function using `torch.nn.CrossEntropyLoss` and an optimizer using `torch.optim.SGD`.
+# Replace <MASK> with the appropriate code to complete the exercise.
 
 # Loss function
 loss_fn = nn.CrossEntropyLoss()
 
-# Optimizer
+# Optimizer (by convention we use the variable optimizer)
 optimizer = torch.optim.SGD(my_mlp.parameters(), lr=0.001)
 
-# Check the types and settings
-assert isinstance(loss_fn, nn.CrossEntropyLoss)
-assert isinstance(optimizer, torch.optim.SGD)
-assert optimizer.defaults["lr"] == 0.001
-assert optimizer.param_groups[0]["params"] == list(my_mlp.parameters())
+# Check
 
-### PyTorch Training Loops
-#PyTorch makes writing a training loop easy!
+assert isinstance(
+    loss_fn, nn.CrossEntropyLoss
+), "loss_fn should be an instance of CrossEntropyLoss"
+assert isinstance(optimizer, torch.optim.SGD), "optimizer should be an instance of SGD"
+assert optimizer.defaults["lr"] == 0.001, "learning rate should be 0.001"
+assert optimizer.param_groups[0]["params"] == list(
+    my_mlp.parameters()
+), "optimizer should be passed the MLP parameters"
+
+# Replace <MASK> with the appropriate code to complete the exercise.
 
 def fake_training_loaders():
     for _ in range(30):
@@ -89,6 +104,7 @@ def fake_training_loaders():
 for epoch in range(3):
     # Create a training loop
     for i, data in enumerate(fake_training_loaders()):
+        # Every data instance is an input + label pair
         x, y = data
 
         # Zero your gradients for every batch!
@@ -107,10 +123,13 @@ for epoch in range(3):
         if i % 10 == 0:
             print(f"Epoch {epoch}, batch {i}: {loss.item():.5f}")
 
-## Part 2: Get to Know HuggingFace
+# Check
 
-### Download a Model from HuggingFace for Sentiment Analysis
-#Let's use the `distilbert-base-uncased-finetuned-sst-2-english` model for sentiment analysis.
+assert abs(loss.item() - 2.3) < 0.1, "the loss should be around 2.3 with random data"
+
+# Replace <MASK> with the appropriate code to complete the exercise.
+
+# Get the model and tokenizer
 
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
@@ -118,23 +137,70 @@ pt_model = AutoModelForSequenceClassification.from_pretrained("distilbert-base-u
 tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased-finetuned-sst-2-english")
 
 def get_prediction(review):
+    """Given a review, return the predicted sentiment"""
+
+    # Tokenize the review
+    # (Get the response as tensors and not as a list)
     inputs = tokenizer(review, return_tensors="pt")
+
+    # Perform the prediction (get the logits)
     outputs = pt_model(**inputs)
+
+    # Get the predicted class (corresponding to the highest logit)
     predictions = torch.argmax(outputs.logits, dim=-1)
+
     return "positive" if predictions.item() == 1 else "negative"
 
-# Check sentiment predictions
-review_negative = "This movie is not so great :("
-print(f"Review: {review_negative}")
-print(f"Sentiment: {get_prediction(review_negative)}")
+# Check
 
-assert get_prediction(review_negative) == "negative", "The prediction should be negative"
+review = "This movie is not so great :("
+print(f"Review: {review}")
+print(f"Sentiment: {get_prediction(review)}")
 
-review_positive = "This movie rocks!"
-print(f"Review: {review_positive}")
-print(f"Sentiment: {get_prediction(review_positive)}")
+assert get_prediction(review) == "negative", "The prediction should be negative"
 
-assert get_prediction(review_positive) == "positive", "The prediction should be positive"
+review = "This movie rocks!"
+print(f"Review: {review}")
+print(f"Sentiment: {get_prediction(review)}")
 
-### Download a Dataset from HuggingFace
-#Let's use the IMDb dataset for our
+assert get_prediction(review) == "positive", "The prediction should be positive"
+
+# Replace <MASK> with the appropriate code
+
+from datasets import load_dataset
+
+# Load the test split of the imdb dataset
+dataset = load_dataset("imdb")["test"]
+
+# Check
+
+from pprint import pprint
+
+from datasets import Dataset
+
+assert isinstance(dataset, Dataset), "The dataset should be a Dataset object"
+assert set(dataset.features.keys()) == {
+    "label",
+    "text",
+}, "The dataset should have a label and a text feature"
+
+# Show the first example
+pprint(dataset[0])
+
+# Replace <MASK> with the appropriate code
+
+# Get the last 3 reviews
+reviews = dataset["text"][-3:]
+
+# Get the last 3 labels
+labels = dataset["label"][-3:]
+
+# Check
+for review, label in zip(reviews, labels):
+    # Let's use your get_prediction function to get the sentiment
+    # of the review!
+    prediction = get_prediction(review)
+
+    print(f"Review: {review[:80]} \n... {review[-80:]}")
+    print(f'Label: {"positive" if label else "negative"}')
+    print(f"Prediction: {prediction}\n")
