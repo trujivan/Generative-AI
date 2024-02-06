@@ -20,7 +20,7 @@ To run the code examples, follow the installation instructions below.
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/generative-ai.git
+git clone https://github.com/trujivan/generative-ai.git
 
 # Navigate to the project directory
 cd generative-ai
